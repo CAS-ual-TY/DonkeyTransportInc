@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "donkey_transport_inc:item/donkey_hypnotizer_tm"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "item.donkey_transport_inc.donkey_hypnotizer_tm": "Donkey Hypnotizer™",
+  "item.donkey_transport_inc.donkey_hypnotizer_tm.by": "by",
+  "item.donkey_transport_inc.donkey_hypnotizer_tm.company": "DONKEY TRANSPORT INC.",
+  "item.donkey_transport_inc.donkey_hypnotizer_tm.instruction.hypnotize": "- Then left click a tamed Donkey to hypnotize it",
+  "item.donkey_transport_inc.donkey_hypnotizer_tm.instruction.start": "- Left click a block to set the 1st waypoint",
+  "item.donkey_transport_inc.donkey_hypnotizer_tm.instruction.waypoint": "- Right click a block to add waypoints to it",
+  "item.donkey_transport_inc.donkey_hypnotizer_tm.instructions": "Instructions:"
+}
