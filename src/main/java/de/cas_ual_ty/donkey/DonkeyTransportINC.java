@@ -1,6 +1,7 @@
 package de.cas_ual_ty.donkey;
 
 import com.mojang.logging.LogUtils;
+import de.cas_ual_ty.donkey.cap.*;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;

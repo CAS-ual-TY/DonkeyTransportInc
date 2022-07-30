@@ -1,4 +1,4 @@
-package de.cas_ual_ty.donkey;
+package de.cas_ual_ty.donkey.cap;
 
 import net.minecraft.nbt.ByteTag;
 import net.minecraftforge.common.util.INBTSerializable;

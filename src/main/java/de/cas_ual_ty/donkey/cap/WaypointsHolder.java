@@ -1,5 +1,6 @@
-package de.cas_ual_ty.donkey;
+package de.cas_ual_ty.donkey.cap;
 
+import de.cas_ual_ty.donkey.DonkeyTransportINC;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

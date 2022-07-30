@@ -1,0 +1,12 @@
+{
+    "required": true,
+    "package": "de.cas_ual_ty.donkey.mixin",
+    "compatibilityLevel": "JAVA_17",
+    "refmap": "donkey_transport_inc.refmap.json",
+    "mixins": [
+        "DonkeyMixin"
+    ],
+    "client": [
+    ],
+    "minVersion": "0.8"
+}

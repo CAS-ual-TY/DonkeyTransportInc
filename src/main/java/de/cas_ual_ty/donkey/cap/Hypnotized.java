@@ -1,5 +1,7 @@
-package de.cas_ual_ty.donkey;
+package de.cas_ual_ty.donkey.cap;
 
+import de.cas_ual_ty.donkey.DonkeyTransportINC;
+import de.cas_ual_ty.donkey.TransportGoal;
 import net.minecraft.nbt.ByteTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -96,7 +98,6 @@ public class Hypnotized implements IHypnotized
     {
         donkey.goalSelector.removeAllGoals();
         donkey.goalSelector.addGoal(1, new TransportGoal(donkey));
-        donkey.goalSelector.addGoal(0, new TransferItemsGoal(donkey));
         donkey.goalSelector.addGoal(0, new FloatGoal(donkey));
     }
 }

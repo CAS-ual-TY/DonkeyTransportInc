@@ -1,5 +1,7 @@
 package de.cas_ual_ty.donkey;
 
+import de.cas_ual_ty.donkey.cap.Hypnotized;
+import de.cas_ual_ty.donkey.cap.WaypointsHolder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

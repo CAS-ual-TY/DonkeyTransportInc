@@ -1,5 +1,6 @@
 package de.cas_ual_ty.donkey;
 
+import de.cas_ual_ty.donkey.cap.WaypointsVisitor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -74,7 +75,7 @@ public class TransportGoal extends Goal
         WaypointsVisitor.getWaypointsVisitor(mob).ifPresent(waypointsVisitor ->
         {
             BlockPos pos = waypointsVisitor.getCurrentWayPoint();
-        
+            
             if(pos != null)
             {
                 reachedDestination = waypointsVisitor.getCurrentWayPoint().above().distToCenterSqr(mob.position()) <= MAX_DISTANCE_SQUARED;
