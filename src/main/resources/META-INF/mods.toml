@@ -3,7 +3,7 @@ loaderVersion="[42,)"
 license="MIT License"
 issueTrackerURL="https://github.com/CAS-ual-TY/DonkeyTransportInc/issues"
 
-    [[mods]]
+[[mods]]
     modId="donkey_transport_inc"
     version="${file.jarVersion}"
     displayName="Donkey Transport Inc."
