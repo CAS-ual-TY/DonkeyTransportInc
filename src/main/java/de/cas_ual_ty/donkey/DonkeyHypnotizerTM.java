@@ -16,6 +16,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -149,6 +150,15 @@ public class DonkeyHypnotizerTM extends Item
         {
             event.setCanceled(true);
             DonkeyTransportINC.DONKEY_HYPNOTIZER_TM.get().clickBlock(event.getLevel(), event.getItemStack(), event.getPos(), true);
+        }
+    }
+    
+    @SubscribeEvent
+    public static void entityStruckByLightning(EntityStruckByLightningEvent event)
+    {
+        if(!event.getEntity().level.isClientSide && event.getEntity() instanceof Donkey)
+        {
+            event.getEntity().spawnAtLocation(new ItemStack(DonkeyTransportINC.DONKEY_HYPNOTIZER_TM.get()));
         }
     }
 }
