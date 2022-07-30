@@ -5,16 +5,26 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class WaypointsVisitor extends WaypointsHolder implements IWaypointsVisitor
 {
     public static final String KEY_CURRENT_WAYPOINT = "current_waypoint";
+    public static final String KEY_WAS_HURT = "was_hurt";
+    public static final String KEY_REACHED_DESTINATION = "reached_destination";
     
     private int waypoint;
+    private boolean wasHurt;
+    private boolean reachedDestination;
     
     public WaypointsVisitor()
     {
         waypoint = 0;
+        wasHurt = false;
+        reachedDestination = false;
     }
     
     @Override
@@ -33,10 +43,36 @@ public class WaypointsVisitor extends WaypointsHolder implements IWaypointsVisit
     }
     
     @Override
+    public boolean wasHurt()
+    {
+        return wasHurt;
+    }
+    
+    @Override
+    public void setWasHurt(boolean wasHurt)
+    {
+        this.wasHurt = wasHurt;
+    }
+    
+    @Override
+    public boolean reachedDestination()
+    {
+        return reachedDestination;
+    }
+    
+    @Override
+    public void setReachedDestination(boolean reachedDestination)
+    {
+        this.reachedDestination = reachedDestination;
+    }
+    
+    @Override
     public CompoundTag serializeNBT()
     {
         CompoundTag tag = super.serializeNBT();
         tag.putInt(KEY_CURRENT_WAYPOINT, waypoint);
+        tag.putBoolean(KEY_WAS_HURT, wasHurt);
+        tag.putBoolean(KEY_REACHED_DESTINATION, reachedDestination);
         return tag;
     }
     
@@ -44,17 +80,24 @@ public class WaypointsVisitor extends WaypointsHolder implements IWaypointsVisit
     public void deserializeNBT(CompoundTag nbt)
     {
         super.deserializeNBT(nbt);
-        if(nbt.contains(KEY_CURRENT_WAYPOINT))
+        waypoint = nbt.getInt(KEY_CURRENT_WAYPOINT);
+        wasHurt = nbt.getBoolean(KEY_WAS_HURT);
+        reachedDestination = nbt.getBoolean(KEY_REACHED_DESTINATION);
+    }
+    
+    @SubscribeEvent
+    public static void livingHurt(LivingHurtEvent event)
+    {
+        if(!event.getEntity().level.isClientSide)
         {
-            waypoint = nbt.getInt(KEY_CURRENT_WAYPOINT);
-        }
-        else
-        {
-            waypoint = 0;
+            getWaypointsVisitor(event.getEntity()).ifPresent(visitor ->
+            {
+                visitor.setWasHurt(true);
+            });
         }
     }
     
-    public static LazyOptional<WaypointsVisitor> getWaypointsVisitor(LivingEntity entity)
+    public static LazyOptional<IWaypointsVisitor> getWaypointsVisitor(LivingEntity entity)
     {
         return entity.getCapability(DonkeyTransportINC.WAYPOINTS_VISITOR_CAPABILITY).cast();
     }

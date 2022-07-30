@@ -79,9 +79,19 @@ public class Hypnotized implements IHypnotized
         }
     }
     
+    private static void setNewDonkeyGoals(Donkey donkey)
+    {
+        donkey.goalSelector.removeAllGoals();
+        donkey.goalSelector.addGoal(1, new TransportGoal(donkey));
+        donkey.goalSelector.addGoal(0, new FloatGoal(donkey));
+    }
+    
     @SubscribeEvent
     public static void entityJoinLevel(EntityJoinLevelEvent event)
     {
+        // re-hypnotize entity if it has capability
+        // override AI goals
+        
         if(!event.getLevel().isClientSide && event.getEntity() instanceof Donkey donkey)
         {
             getHypnotized(donkey).ifPresent(hypnotized ->
@@ -92,12 +102,5 @@ public class Hypnotized implements IHypnotized
                 }
             });
         }
-    }
-    
-    private static void setNewDonkeyGoals(Donkey donkey)
-    {
-        donkey.goalSelector.removeAllGoals();
-        donkey.goalSelector.addGoal(1, new TransportGoal(donkey));
-        donkey.goalSelector.addGoal(0, new FloatGoal(donkey));
     }
 }

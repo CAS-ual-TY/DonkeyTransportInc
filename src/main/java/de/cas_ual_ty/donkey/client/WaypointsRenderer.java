@@ -1,4 +1,4 @@
-package de.cas_ual_ty.donkey;
+package de.cas_ual_ty.donkey.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -47,13 +47,13 @@ public class WaypointsRenderer
                     poseStack.pushPose();
                     poseStack.translate(-pos.x(), -pos.y(), -pos.z());
                     
-                    waypointsHolder.forEach(blockPos -> renderBlockPos(player.level, poseStack, blockPos));
+                    waypointsHolder.forEach(blockPos -> renderBlockPos(player.level, poseStack, blockPos, 1F, 1F, 1F));
                     
                     poseStack.popPose();
                 });
             }
             
-            
+            // F3+B
             if(Minecraft.getInstance().getEntityRenderDispatcher().shouldRenderHitBoxes())
             {
                 Vec3 pos = event.getCamera().getPosition();
@@ -80,8 +80,8 @@ public class WaypointsRenderer
                         {
                             BlockPos below = new BlockPos(x, belowY, z);
                             BlockPos above = new BlockPos(x, aboveY, z);
-                            renderBlockPos2(player.level, poseStack, below);
-                            renderBlockPos2(player.level, poseStack, above);
+                            renderBlockPos(player.level, poseStack, below, 1F, 0F, 0F);
+                            renderBlockPos(player.level, poseStack, above, 1F, 0F, 0F);
                         }
                     }
                 }
@@ -91,7 +91,7 @@ public class WaypointsRenderer
         }
     }
     
-    private static void renderBlockPos(Level level, PoseStack poseStack, BlockPos blockPos)
+    private static void renderBlockPos(Level level, PoseStack poseStack, BlockPos blockPos, float r, float g, float b)
     {
         RenderSystem.lineWidth(10F);
         MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
@@ -99,20 +99,7 @@ public class WaypointsRenderer
         
         AABB aabb = AABB.unitCubeFromLowerCorner(new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ()));
         
-        LevelRenderer.renderLineBox(poseStack, vertexConsumer, aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ, 1F, 1F, 1F, 1F);
-        RenderSystem.disableDepthTest();
-        bufferSource.endBatch(RenderType.LINES);
-    }
-    
-    private static void renderBlockPos2(Level level, PoseStack poseStack, BlockPos blockPos)
-    {
-        RenderSystem.lineWidth(10F);
-        MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.LINES);
-        
-        AABB aabb = AABB.unitCubeFromLowerCorner(new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ()));
-        
-        LevelRenderer.renderLineBox(poseStack, vertexConsumer, aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ, 1F, 0F, 0F, 1F);
+        LevelRenderer.renderLineBox(poseStack, vertexConsumer, aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ, r, g, b, 1F);
         RenderSystem.disableDepthTest();
         bufferSource.endBatch(RenderType.LINES);
     }

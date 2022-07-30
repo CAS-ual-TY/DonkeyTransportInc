@@ -44,7 +44,7 @@ public class DataGen
         {
             add(DonkeyTransportINC.DONKEY_HYPNOTIZER_TM.get(), "Donkey Hypnotizer™");
             add(DonkeyTransportINC.DONKEY_HYPNOTIZER_TM.get().getDescriptionId() + DonkeyHypnotizerTM.BY_KEY, "by");
-            add(DonkeyTransportINC.DONKEY_HYPNOTIZER_TM.get().getDescriptionId() + DonkeyHypnotizerTM.COMPANY_KEY, "DONKEY TRANSPORT INC.");
+            add(DonkeyTransportINC.DONKEY_HYPNOTIZER_TM.get().getDescriptionId() + DonkeyHypnotizerTM.COMPANY_KEY, "Donkey Transport Inc.");
             add(DonkeyTransportINC.DONKEY_HYPNOTIZER_TM.get().getDescriptionId() + DonkeyHypnotizerTM.INSTRUCTIONS_KEY, "Instructions:");
             add(DonkeyTransportINC.DONKEY_HYPNOTIZER_TM.get().getDescriptionId() + DonkeyHypnotizerTM.INSTRUCTION_1_KEY, "- Left click a block to set the 1st waypoint");
             add(DonkeyTransportINC.DONKEY_HYPNOTIZER_TM.get().getDescriptionId() + DonkeyHypnotizerTM.INSTRUCTION_2_KEY, "- Right click a block to add waypoints to it");

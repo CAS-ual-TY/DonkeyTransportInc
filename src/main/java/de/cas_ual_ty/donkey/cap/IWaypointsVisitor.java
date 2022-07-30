@@ -10,4 +10,12 @@ public interface IWaypointsVisitor extends IWaypointsHolder
     BlockPos getCurrentWayPoint();
     
     void toNextWaypoint();
+    
+    boolean wasHurt();
+    
+    void setWasHurt(boolean wasHurt);
+    
+    boolean reachedDestination();
+    
+    void setReachedDestination(boolean reachedDestination);
 }

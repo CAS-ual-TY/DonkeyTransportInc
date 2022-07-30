@@ -16,9 +16,9 @@ public abstract class DonkeyMixin extends AbstractChestedHorse implements Contai
     // account for saddle and chest slot
     private static final int SKIP_SLOTS = 2;
     
-    protected DonkeyMixin(EntityType<? extends AbstractChestedHorse> pEntityType, Level pLevel)
+    protected DonkeyMixin(EntityType<? extends AbstractChestedHorse> entityType, Level level)
     {
-        super(pEntityType, pLevel);
+        super(entityType, level);
     }
     
     @Override

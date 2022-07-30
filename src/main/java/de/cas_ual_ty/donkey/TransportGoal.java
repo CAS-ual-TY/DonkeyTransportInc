@@ -1,14 +1,12 @@
 package de.cas_ual_ty.donkey;
 
+import de.cas_ual_ty.donkey.cap.IWaypointsVisitor;
 import de.cas_ual_ty.donkey.cap.WaypointsVisitor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.common.util.LazyOptional;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TransportGoal extends Goal
 {
     public static final double SPEED = 2D;
@@ -16,39 +14,36 @@ public class TransportGoal extends Goal
     
     public final PathfinderMob mob;
     
-    private boolean wasHurt;
-    private boolean reachedDestination;
-    
     public TransportGoal(PathfinderMob mob)
     {
         this.mob = mob;
-        wasHurt = true;
-        reachedDestination = false;
-    }
-    
-    public void setWasHurt()
-    {
-        wasHurt = true;
     }
     
     @Override
     public boolean canUse()
     {
-        if(WaypointsVisitor.getWaypointsVisitor(mob).isPresent() && (wasHurt || !reachedDestination))
+        if(!hasVisitorCap())
         {
-            wasHurt = false;
+            return false;
+        }
+        
+        IWaypointsVisitor visitor = forceGetVisitorCap();
+        
+        if(visitor.wasHurt())
+        {
+            visitor.setWasHurt(false);
             return true;
         }
         
-        return false;
+        return !visitor.reachedDestination();
     }
     
     @Override
     public void start()
     {
-        WaypointsVisitor.getWaypointsVisitor(mob).ifPresent(waypointsVisitor ->
+        getVisitorCap().ifPresent(visitor ->
         {
-            BlockPos pos = waypointsVisitor.getCurrentWayPoint();
+            BlockPos pos = visitor.getCurrentWayPoint();
             
             if(pos != null)
             {
@@ -60,11 +55,11 @@ public class TransportGoal extends Goal
     @Override
     public void stop()
     {
-        WaypointsVisitor.getWaypointsVisitor(mob).ifPresent(waypointsVisitor ->
+        getVisitorCap().ifPresent(visitor ->
         {
-            if(reachedDestination)
+            if(visitor.reachedDestination())
             {
-                waypointsVisitor.toNextWaypoint();
+                visitor.toNextWaypoint();
             }
         });
     }
@@ -72,13 +67,13 @@ public class TransportGoal extends Goal
     @Override
     public void tick()
     {
-        WaypointsVisitor.getWaypointsVisitor(mob).ifPresent(waypointsVisitor ->
+        getVisitorCap().ifPresent(waypointsVisitor ->
         {
             BlockPos pos = waypointsVisitor.getCurrentWayPoint();
             
             if(pos != null)
             {
-                reachedDestination = waypointsVisitor.getCurrentWayPoint().above().distToCenterSqr(mob.position()) <= MAX_DISTANCE_SQUARED;
+                waypointsVisitor.setReachedDestination(waypointsVisitor.getCurrentWayPoint().above().distToCenterSqr(mob.position()) <= MAX_DISTANCE_SQUARED);
             }
         });
     }
@@ -92,26 +87,26 @@ public class TransportGoal extends Goal
     @Override
     public boolean canContinueToUse()
     {
-        return mob.getNavigation().isInProgress() && !wasHurt;
+        return mob.getNavigation().isInProgress() && (hasVisitorCap() && !forceGetVisitorCap().wasHurt());
     }
     
-    protected void moveMobToBlock(BlockPos blockPos)
+    private void moveMobToBlock(BlockPos blockPos)
     {
         mob.getNavigation().moveTo((double) blockPos.getX() + 0.5D, blockPos.getY() + 1, (double) blockPos.getZ() + 0.5D, SPEED);
     }
     
-    @SubscribeEvent
-    public static void livingHurt(LivingHurtEvent event)
+    private boolean hasVisitorCap()
     {
-        if(!event.getEntity().level.isClientSide && event.getEntity() instanceof PathfinderMob mob)
-        {
-            mob.goalSelector.getAvailableGoals().stream().forEach(goal ->
-            {
-                if(goal.getGoal() instanceof TransportGoal transportGoal)
-                {
-                    transportGoal.setWasHurt();
-                }
-            });
-        }
+        return getVisitorCap().isPresent();
+    }
+    
+    private IWaypointsVisitor forceGetVisitorCap()
+    {
+        return getVisitorCap().orElseThrow(IllegalArgumentException::new);
+    }
+    
+    private LazyOptional<IWaypointsVisitor> getVisitorCap()
+    {
+        return WaypointsVisitor.getWaypointsVisitor(mob);
     }
 }

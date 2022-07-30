@@ -42,8 +42,10 @@ public class DonkeyTransportINC
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         ITEMS.register(bus);
         bus.addListener(DonkeyTransportINC::registerCapabilities);
-        MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, DonkeyTransportINC::attachEntityCapabilities);
-        MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class, DonkeyTransportINC::attachItemCapabilities);
+        
+        bus = MinecraftForge.EVENT_BUS;
+        bus.addGenericListener(Entity.class, DonkeyTransportINC::attachEntityCapabilities);
+        bus.addGenericListener(ItemStack.class, DonkeyTransportINC::attachItemCapabilities);
     }
     
     private static void registerCapabilities(RegisterCapabilitiesEvent event)
