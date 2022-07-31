@@ -1,7 +1,9 @@
 # Donkey Transport Inc.
 Hypnotize donkeys for item transport (#forgejam22 coding contest entry)  
 
-The curseforge project page is not approved yet, so this is the info page for now. The repository comes with a demonstration world.
+The repository comes with a demonstration world.  
+
+[https://www.curseforge.com/minecraft/mc-mods/donkey-transport-inc](https://www.curseforge.com/minecraft/mc-mods/donkey-transport-inc)
 
 ## Description
 
